@@ -1,0 +1,9 @@
+
+Impl/.idea
+
+Impl/Algo/.idea/
+Impl/Algo/bin/
+Impl/Algo/obj/
+Impl/Algo/show/.cache
+Impl/Algo/show/dist
+Impl/Algo/show/node_modules

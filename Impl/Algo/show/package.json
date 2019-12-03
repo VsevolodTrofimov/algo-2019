@@ -1,0 +1,16 @@
+{
+  "name": "show",
+  "version": "1.0.0",
+  "description": "",
+  "main": "show.js",
+  "scripts": {
+    "start": "parcel index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "parcel": "^1.12.4",
+    "vis-network": "^6.4.6",
+    "viz": "^1.1.0"
+  }
+}
