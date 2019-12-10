@@ -27,17 +27,18 @@ namespace Algo
         }
         private static void BenchOne(int n, double p)
         {
-            var graph = Generate.GenerateGraph(n, (int) Math.Pow(n * n, p), 1337);
+            var edge = (int) Math.Pow(n * n, p);
+            var graph = Generate.GenerateGraph(n, edge, 1337);
             var s = new Stopwatch();
             var results = new Dictionary<string, List<long>> { {"L", new List<long>()}, {"D", new List<long>()} };
             
             Console.WriteLine($"n: {n}, p: {p}, Levit");
             for (var i = 0; i < 10; ++i)
             {
-                s.Restart();
+                s.Restart();   
                 Solve.Levit(graph, 1);
-                var t = s.ElapsedTicks;
-                results["L"].Add(t);
+                var t = s.ElapsedMilliseconds;
+                results["L"].Add(t);  
             }
             
             Console.WriteLine($"n: {n}, p: {p}, Deikstra");
@@ -45,7 +46,7 @@ namespace Algo
             {
                 s.Restart();
                 Solve.Dijkstra(graph, 1);
-                var t = s.ElapsedTicks;
+                var t = s.ElapsedMilliseconds;
                 results["D"].Add(t);
             }
             
@@ -59,8 +60,8 @@ namespace Algo
 
         private static void Bench()
         {
-            var ps = new List<double> { 0.3, 0.5, 0.65, 0.8, 0.9 };
-            var ns = new List<int> { 10, 50, 100, 1000, 5000 };
+            var ps = new List<double> { 0.3, 0.5, 0.65, 0.7, 0.75, 0.8, 0.9 };
+            var ns = new List<int> { 10, 50, 100, 1000, 2000, 3000, 5000, 6000, 10000 };
             foreach (var n in ns)
             {
                 foreach (var p in ps)

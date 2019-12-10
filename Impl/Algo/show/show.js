@@ -64,36 +64,30 @@ const renderValues = (name, data) => {
 
 const showCharts = () => {
     active = "charts"
-    const ns = [10, 50, 100, 1000, 5000]
+    const ns = [100, 1000, 2000, 3000, 5000, 6000, 10000]
     const chartData = {
         datasets: [
             {
                 label: 'Levit',
-                data: ns.map(n => avg(json[`n-${n}-p-${p}-r`]['L'])),
+                data: ns.map(n => ({ x: n, y: avg(json[`n-${n}-p-${p}-r`]['L']) })),
                 backgroundColor: 'rgba(255, 206, 86, 0.2)',
                 borderColor: 'rgba(255, 206, 86, 1)'
             },
             {
                 label: 'Dijkstra',
-                data: ns.map(n => avg(json[`n-${n}-p-${p}-r`]['D'])),
+                data: ns.map(n => ({ x: n, y: avg(json[`n-${n}-p-${p}-r`]['D']) })),
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)'
             },
             {
                 label: 'N^2',
-                data: ns.map(n => n * n),
+                data: ns.map(n => ({ x: n, y: n * n / 1.5 / 10 ** 4 })),
                 backgroundColor: 'rgba(0, 99, 132, 0)',
                 borderColor: 'rgba(0, 99, 132, 1)'
             },
             {
-                label: 'N^3',
-                data: ns.map(n => n * n),
-                backgroundColor: 'rgba(0, 99, 132, 0)',
-                borderColor: 'rgba(0, 99, 132, 1)'
-            },
-            {
-                label: 'n log(n)',
-                data: ns.map(n => n * Math.log2(n)),
+                label: 'N^2 * M',
+                data: ns.map(n => ({ x: n, y: n * n * (n * n) ** p / 1.4 / 10 ** 10 })),
                 backgroundColor: 'rgba(0, 99, 132, 0)',
                 borderColor: 'rgba(0, 0, 0, 1)'
             },
@@ -130,8 +124,8 @@ $render.addEventListener('click', () => {
 $charts.addEventListener('click', showCharts)
 
 const makeResTable = () => {
-    const ns = [10, 50, 100, 1000, 5000]
-    const ps = [0.3, 0.5, 0.65, 0.8, 0.9]
+    const ns = [10, 50, 100, 1000, 2000, 3000, 5000, 6000, 10000]
+    const ps = [0.3, 0.5, 0.65, 0.7, 0.75, 0.8, 0.9]
 
     const table = []
     for (let y = 0; y < ps.length; ++y) {
@@ -139,7 +133,8 @@ const makeResTable = () => {
         for (let x = 0; x < ns.length; ++x) {
             const data = json[`n-${ns[x]}-p-${ps[y]}-r`]["D"]
             const sorted = [...data].sort()
-            table[y][x] = sorted[Math.round(sorted.length / 2)].toFixed(1)
+            table[y][x] = avg(sorted).toFixed(1)
+            // table[y][x] = sorted[Math.round(sorted.length / 2)].toFixed(1)
         }
     }
     let html = `<table>`
@@ -153,3 +148,19 @@ const makeResTable = () => {
 }
 
 // makeResTable()
+
+
+const comp = () => {
+    const pairs = [[1000, 2000], [3000, 6000], [5000, 10000]]
+    const ps = [0.3, 0.5, 0.65, 0.7, 0.75, 0.8, 0.9]
+
+    for (let p of ps) {
+        for (let pair of pairs) {
+            const data = json[`n-${pair[0]}-p-${p}-r`]["L"]
+            const data2 = json[`n-${pair[1]}-p-${p}-r`]["L"]
+            console.log(p, pair, avg(data2) / avg(data))
+        }
+    }
+}
+
+// comp()

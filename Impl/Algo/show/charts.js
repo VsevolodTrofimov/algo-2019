@@ -15,15 +15,18 @@ export const renderCharts = (data, p) => {
                 yAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: `AVG Ticks @ p=${p}`,
+                        labelString: `AVG MS @ p=${p}`,
                     },
-                    type: "logarithmic"
+                    type: "linear",
                 }],
                 xAxes: [{
                     scaleLabel: {
                         display: true,
                         labelString: 'n'
-                    }
+                    },
+                    type: "linear",
+                    max: 0,
+                    min: 10000,
                 }]
             }
         }
