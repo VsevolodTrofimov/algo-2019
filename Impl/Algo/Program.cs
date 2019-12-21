@@ -9,6 +9,10 @@ namespace Algo
 {
     internal static class Program
     {
+        private static long GetMicro(Stopwatch s)
+        {
+            return s.ElapsedTicks / (TimeSpan.TicksPerMillisecond / 1000);
+        } 
         private static void Show()
         {
             var graph = Generate.GenerateGraph(40, 100, 1); 
@@ -33,20 +37,22 @@ namespace Algo
             var results = new Dictionary<string, List<long>> { {"L", new List<long>()}, {"D", new List<long>()} };
             
             Console.WriteLine($"n: {n}, p: {p}, Levit");
-            for (var i = 0; i < 10; ++i)
+            for (var i = 0; i <= 10; ++i)
             {
                 s.Restart();   
                 Solve.Levit(graph, 1);
-                var t = s.ElapsedMilliseconds;
+                if (i == 0) continue;
+                var t = GetMicro(s);
                 results["L"].Add(t);  
             }
             
             Console.WriteLine($"n: {n}, p: {p}, Deikstra");
-            for (var i = 0; i < 10; ++i)
+            for (var i = 0; i <= 10; ++i)
             {
                 s.Restart();
                 Solve.Dijkstra(graph, 1);
-                var t = s.ElapsedMilliseconds;
+                if (i == 0) continue;
+                var t = GetMicro(s);
                 results["D"].Add(t);
             }
             
